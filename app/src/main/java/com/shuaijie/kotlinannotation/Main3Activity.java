@@ -4,14 +4,10 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.shuaijie.PermissionGenerate.annotation.PermissionAllow;
 import com.shuaijie.PermissionGenerate.annotation.PermissionExplanation;
 import com.shuaijie.PermissionGenerate.annotation.PermissionRefuse;
-import com.shuaijie.permissionproxy.PermissionProxyInterface;
 import com.shuaijie.permissionproxy.PermissionUtils;
 
 public class Main3Activity extends AppCompatActivity {
@@ -37,9 +33,5 @@ public class Main3Activity extends AppCompatActivity {
     @PermissionExplanation(requestCode = 1)
     public void explanation() {
         Toast.makeText(this, "申请权限需要解释", Toast.LENGTH_SHORT).show();
-    }
-
-    public <T> T fromJson(String json) {
-        return new Gson().fromJson(json, new TypeToken<T>(){}.getType());
     }
 }

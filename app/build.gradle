@@ -44,12 +44,7 @@ dependencies {
      * javaCompileOptions {annotationProcessorOptions {includeCompileClasspath true}} 去除此项  annotationProcessor project(':PermissionGenerate')
      * 同时使用kapt和annotationProcessor会导致 AnnotationProcessor执行两次
      */
-    annotationProcessor project(':PermissionGenerate')
+//    annotationProcessor project(':PermissionGenerate')
     compileOnly project(':PermissionGenerate')
     implementation project(':PermissionProxy')
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'se.emilsjolander:stickylistheaders:latest.release'
 }
