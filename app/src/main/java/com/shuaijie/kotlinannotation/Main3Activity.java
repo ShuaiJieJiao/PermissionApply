@@ -10,6 +10,8 @@ import com.shuaijie.PermissionGenerate.annotation.PermissionExplanation;
 import com.shuaijie.PermissionGenerate.annotation.PermissionRefuse;
 import com.shuaijie.permissionproxy.PermissionUtils;
 
+import java.util.List;
+
 public class Main3Activity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,17 +23,18 @@ public class Main3Activity extends AppCompatActivity {
     }
 
     @PermissionAllow(requestCode = 1)
-    public void allow() {
+    public String allow(List<String> aa) {
         Toast.makeText(this, "申请权限被允许", Toast.LENGTH_SHORT).show();
+        return "sdfs";
     }
 
     @PermissionRefuse(requestCode = 1)
-    public void refuse() {
+    public void refuse(List<String> aa) {
         Toast.makeText(this, "申请权限被拒绝", Toast.LENGTH_SHORT).show();
     }
 
     @PermissionExplanation(requestCode = 1)
-    public void explanation() {
+    public void explanation(List<String> aa) {
         Toast.makeText(this, "申请权限需要解释", Toast.LENGTH_SHORT).show();
     }
 }

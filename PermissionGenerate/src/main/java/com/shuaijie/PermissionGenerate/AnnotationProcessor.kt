@@ -3,7 +3,6 @@ package com.shuaijie.PermissionGenerate
 import com.shuaijie.PermissionGenerate.annotation.PermissionAllow
 import com.shuaijie.PermissionGenerate.annotation.PermissionExplanation
 import com.shuaijie.PermissionGenerate.annotation.PermissionRefuse
-import com.shuaijie.PermissionGenerate.source.ClassSource
 import java.io.File
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
@@ -62,17 +61,26 @@ class AnnotationProcessor : AbstractProcessor() {
         // 向控制台输出信息
         processingEnv.messager.printMessage(WARNING, "${processingEnv.options}")
         // 遍历扫描结果
-        ClassSource.SourceBuild("")
         permssionAnnotations.forEach { annotation ->
-            val annotatedElements = roundEnv.getElementsAnnotatedWith(annotation)
-            annotatedElements.forEach { element ->
+            roundEnv.getElementsAnnotatedWith(annotation).forEach { element ->
                 val info = getInfo(element, processingEnv)
-                if (annotation == PermissionAllow::class.java) {
-                    info.addAllow(element.getAnnotation(annotation).requestCode, element.toString())
-                } else if (annotation == PermissionRefuse::class.java) {
-                    info.addRefuse(element.getAnnotation(annotation).requestCode, element.toString())
-                } else if (annotation == PermissionExplanation::class.java) {
-                    info.addExplanation(element.getAnnotation(annotation).requestCode, element.toString())
+                var methodName =
+                    "${element.simpleName}${{
+                        var methodParameter = element.asType().toString()
+                        if (methodParameter.matches(Regex("\\(\\).+"))) "()" else
+                            if (methodParameter.matches(Regex("\\(.+List<.+String>\\).+"))) "(permissions.asList())" else
+                                throw IllegalArgumentException("${element.enclosingElement}.${element} 参数错误支持List<String>")
+                    }()}"
+                when (annotation) {
+                    PermissionAllow::class.java -> info.addAllow(
+                        element.getAnnotation(annotation).requestCode, methodName
+                    )
+                    PermissionRefuse::class.java -> info.addRefuse(
+                        element.getAnnotation(annotation).requestCode, methodName
+                    )
+                    PermissionExplanation::class.java -> info.addExplanation(
+                        element.getAnnotation(annotation).requestCode, methodName
+                    )
                 }
             }
         }

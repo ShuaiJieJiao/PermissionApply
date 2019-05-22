@@ -19,19 +19,23 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    @PermissionAllow(requestCode = 2)
+    fun allowss(aa: List<String>) {
+        Toast.makeText(this, "申请权限被允许", Toast.LENGTH_SHORT).show()
+    }
 
     @PermissionAllow(requestCode = 1)
-    fun allow() {
+    fun allow(aa: List<String>) {
         Toast.makeText(this, "申请权限被允许", Toast.LENGTH_SHORT).show()
     }
 
     @PermissionRefuse(requestCode = 1)
-    fun refuse() {
+    fun refuse(aa: List<String>) {
         Toast.makeText(this, "申请权限被拒绝", Toast.LENGTH_SHORT).show()
     }
 
     @PermissionExplanation(requestCode = 1)
-    fun explanation() {
+    fun explanation(aa: List<String>) {
         Toast.makeText(this, "申请权限需要解释", Toast.LENGTH_SHORT).show()
         PermissionUtils.request(
             this, 1, false,

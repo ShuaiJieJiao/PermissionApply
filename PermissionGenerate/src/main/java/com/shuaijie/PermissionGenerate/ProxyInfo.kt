@@ -47,7 +47,7 @@ class ProxyInfo(var element: Element, processingEnv: ProcessingEnvironment) {
 
     // 生成方法
     fun generateMethod(methodName: String, methodBody: Map<Int, String>): String {
-        return "\n\toverride fun $methodName(mContext: T, requestCode: Int) {\n" +
+        return "\n\toverride fun $methodName(mContext: T, vararg permissions: String, requestCode: Int) {\n" +
                 "\t\twhen (requestCode) {\n" + "${{
             var method = StringBuffer()
             methodBody.entries.forEach { entry -> method.append("\t\t\t${entry.key} -> mContext.${entry.value}\n") }
@@ -59,7 +59,7 @@ class ProxyInfo(var element: Element, processingEnv: ProcessingEnvironment) {
 
     // 生成是否解释判断方法
     fun generateIsExplanationMethod(): String {
-        return "\n\toverride fun isExplanation(mContext: T, requestCode: Int): Boolean {\n" +
+        return "\n\toverride fun isExplanation(mContext: T, vararg permissions: String, requestCode: Int): Boolean {\n" +
                 "\t\treturn when (requestCode) {\n" + "${{
             var method = StringBuffer()
             explanation.entries.forEach { entry -> method.append("\t\t\t${entry.key} -> ${true}\n") }

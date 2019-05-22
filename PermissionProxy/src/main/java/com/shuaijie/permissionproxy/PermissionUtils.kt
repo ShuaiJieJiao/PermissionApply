@@ -13,6 +13,7 @@ import java.util.*
 /**
  * 权限申请工具
  */
+@SuppressWarnings("all")
 object PermissionUtils {
     var proxyName = "PermissionProxy"
 
@@ -29,13 +30,13 @@ object PermissionUtils {
         permissionRequest.setPermissionsProxy(getPermissionProxy(mContext))
         //小于android 6.0 权限不需要申请
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            permissionRequest.allow(mContext, requestCode)
+            permissionRequest.allow(mContext, *permissions, requestCode = requestCode)
         } else {
             // 检查是否有权限被拒绝
             val denyPermissions = checkPermissions(
                 if (mContext is android.support.v4.app.Fragment) mContext.context!! else if (mContext is android.app.Fragment) mContext.context else (mContext as android.app.Activity),
                 *permissions
-            )
+            ).toTypedArray()
             //判断被拒绝权限是否提供申请权限解释
             if (denyPermissions.size > 0) {
                 //未授权权限是否给用户提供权限解释
@@ -46,7 +47,7 @@ object PermissionUtils {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(
                                 if (mContext is android.support.v4.app.Fragment) mContext.activity!! else if (mContext is android.app.Fragment) mContext.activity!! else (mContext as android.app.Activity),
                                 denyPermission
-                            ) && permissionRequest.isExplanation(mContext, requestCode)
+                            ) && permissionRequest.isExplanation(mContext, *permissions, requestCode = requestCode)
                         ) {
                             isRationale = true
                             break
@@ -54,14 +55,14 @@ object PermissionUtils {
                     }
                 if (isRationale) {
                     // 需要权限解释,可通过isExplantion = false 重新申请权限
-                    permissionRequest.explanation(mContext, requestCode)
+                    permissionRequest.explanation(mContext, *denyPermissions, requestCode = requestCode)
                 } else {
                     //不需要权限解释,直接申请权限
-                    permissionRequest.requestPermission(mContext, denyPermissions.toTypedArray(), requestCode)
+                    permissionRequest.requestPermission(mContext, denyPermissions, requestCode)
                 }
             } else {
                 //申请的权限都被授权,直接调用允许操作方法
-                permissionRequest.allow(mContext, requestCode)
+                permissionRequest.allow(mContext, *permissions, requestCode = requestCode)
             }
         }
     }

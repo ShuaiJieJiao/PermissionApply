@@ -7,6 +7,7 @@ import android.os.Build
 import com.shuaijie.permissionproxy.PermissionProxyInterface
 import com.shuaijie.permissionproxy.PermissionUtils
 
+@SuppressWarnings("all")
 class AppPermissionRequest : Fragment(), PermissionRequest {
     var permissions: Array<String> = arrayOf()
     var requestCode: Int = 0
@@ -66,27 +67,35 @@ class AppPermissionRequest : Fragment(), PermissionRequest {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // 权限回调结果分发
         if (grantResults.contains(PackageManager.PERMISSION_DENIED))
-            refuse(mContext!!, requestCode)
-        else allow(mContext!!, requestCode)
+            refuse(
+                mContext!!,
+                *filterPermission(permissions, grantResults, PackageManager.PERMISSION_DENIED),
+                requestCode = requestCode
+            )
+        else allow(
+            mContext!!,
+            *filterPermission(permissions, grantResults, PackageManager.PERMISSION_GRANTED),
+            requestCode = requestCode
+        )
 
         // 移除监听
         if (mContext is Fragment) (mContext as Fragment).fragmentManager.beginTransaction().remove(this).commitAllowingStateLoss()
         else if (mContext is Activity) (mContext as Activity).fragmentManager.beginTransaction().remove(this).commitAllowingStateLoss()
     }
 
-    override fun allow(mContext: Any, requestCode: Int) {
-        createProxy(mContext).allow(mContext, requestCode)
+    override fun allow(mContext: Any, vararg permissions: String, requestCode: Int) {
+        createProxy(mContext).allow(mContext, *permissions, requestCode = requestCode)
     }
 
-    override fun refuse(mContext: Any, requestCode: Int) {
-        createProxy(mContext).refuse(mContext, requestCode)
+    override fun refuse(mContext: Any, vararg permissions: String, requestCode: Int) {
+        createProxy(mContext).refuse(mContext, *permissions, requestCode = requestCode)
     }
 
-    override fun explanation(mContext: Any, requestCode: Int) {
-        createProxy(mContext).explanation(mContext, requestCode)
+    override fun explanation(mContext: Any, vararg permissions: String, requestCode: Int) {
+        createProxy(mContext).explanation(mContext, *permissions, requestCode = requestCode)
     }
 
-    override fun isExplanation(mContext: Any, requestCode: Int): Boolean {
-        return createProxy(mContext).isExplanation(mContext, requestCode)
+    override fun isExplanation(mContext: Any, vararg permissions: String, requestCode: Int): Boolean {
+        return createProxy(mContext).isExplanation(mContext, *permissions, requestCode = requestCode)
     }
 }
