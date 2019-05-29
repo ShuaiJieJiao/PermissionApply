@@ -4,6 +4,7 @@ import android.content.pm.PackageManager
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.shuaijie.permissionproxy.PermissionProxyInterface
+import com.shuaijie.permissionproxy.PermissionProxyInterface.Companion.filterPermission
 import com.shuaijie.permissionproxy.PermissionUtils
 
 class V4PermissionRequest : Fragment(), PermissionRequest {

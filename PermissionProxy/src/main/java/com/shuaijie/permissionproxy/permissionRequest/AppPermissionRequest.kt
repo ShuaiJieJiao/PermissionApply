@@ -5,6 +5,7 @@ import android.app.Fragment
 import android.content.pm.PackageManager
 import android.os.Build
 import com.shuaijie.permissionproxy.PermissionProxyInterface
+import com.shuaijie.permissionproxy.PermissionProxyInterface.Companion.filterPermission
 import com.shuaijie.permissionproxy.PermissionUtils
 
 @SuppressWarnings("all")
