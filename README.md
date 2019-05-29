@@ -40,9 +40,22 @@ annotationProcessor 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:
 javaCompileOptions {annotationProcessorOptions {includeCompileClasspath true}}
 ```
 
+### 混淆配置
+```
+-keep public class * implements com.shuaijie.permissionproxy.PermissionProxyInterface
+```
+
 ## 使用篇
 
-###### 参数说明
+##### 注解说明
+
+注解类 | 参数 | 用途 | 被标注方法参数说明
+------------ | ------------- | ------------ | ------------
+PermissionAllow | requestCode 接收对应申请对话 | 标注允许的方法 | 没有参数 或 List\<String>
+PermissionRefuse | requestCode 接收对应申请对话  | 标注拒绝的方法 | 没有参数 或 List\<String>
+PermissionExplanation | requestCode 接收对应申请对话 | 标注解释的方法 | 没有参数 或 List\<String>
+
+PermissionUtils.request 参数含义
 ```
 /** 
  * 申请权限
@@ -53,6 +66,7 @@ javaCompileOptions {annotationProcessorOptions {includeCompileClasspath true}}
  * @param proxy         申请权限回调的代理对象
  */
 ```
+###### 参数说明
 java 代码不使用注解生成库示例
 ```
 public class MainActivity extends AppCompatActivity {
