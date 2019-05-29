@@ -51,9 +51,9 @@ javaCompileOptions {annotationProcessorOptions {includeCompileClasspath true}}
 
 注解类 | 参数 | 用途 | 被标注方法参数说明
 ------------ | ------------- | ------------ | ------------
-PermissionAllow | requestCode 接收对应申请对话 | 标注允许的方法 | 没有参数 或 List\<String>
-PermissionRefuse | requestCode 接收对应申请对话  | 标注拒绝的方法 | 没有参数 或 List\<String>
-PermissionExplanation | requestCode 接收对应申请对话 | 标注解释的方法 | 没有参数 或 List\<String>
+PermissionAllow | requestCode 接收对应申请对话 | 标注允许的方法 | 没有参数 或 List\<String>接收被允许的权限
+PermissionRefuse | requestCode 接收对应申请对话  | 标注拒绝的方法 | 没有参数 或 List\<String>接收被拒绝的权限
+PermissionExplanation | requestCode 接收对应申请对话 | 标注解释的方法 | 没有参数 或 List\<String>接收需要解释的权限
 
 PermissionUtils.request 参数含义
 ```
