@@ -8,7 +8,9 @@ import android.widget.Toast;
 import com.shuaijie.PermissionGenerate.annotation.PermissionAllow;
 import com.shuaijie.PermissionGenerate.annotation.PermissionExplanation;
 import com.shuaijie.PermissionGenerate.annotation.PermissionRefuse;
+import com.shuaijie.permissionproxy.PermissionProxyInterface;
 import com.shuaijie.permissionproxy.PermissionUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -17,15 +19,34 @@ public class Main3Activity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PermissionUtils.INSTANCE.request(this, true, new PermissionProxyInterface<Object>() {
+            @Override
+            public boolean isExplanation(Object mContext, @NotNull String[] permissions, int requestCode) {
+                return false;
+            }
+
+            @Override
+            public void allow(Object mContext, @NotNull String[] permissions, int requestCode) {
+
+            }
+
+            @Override
+            public void refuse(Object mContext, @NotNull String[] permissions, int requestCode) {
+
+            }
+
+            @Override
+            public void explanation(Object mContext, @NotNull String[] permissions, int requestCode) {
+
+            }
+        }, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
+
         PermissionUtils.INSTANCE.request(this, 1, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA);
-
-
     }
 
     @PermissionAllow(requestCode = 1)
-    public String allow(List<String> aa) {
+    public void allow(List<String> aa) {
         Toast.makeText(this, "申请权限被允许", Toast.LENGTH_SHORT).show();
-        return "sdfs";
     }
 
     @PermissionRefuse(requestCode = 1)

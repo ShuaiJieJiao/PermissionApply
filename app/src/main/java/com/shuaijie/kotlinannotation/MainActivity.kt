@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.shuaijie.PermissionGenerate.annotation.PermissionAllow
 import com.shuaijie.PermissionGenerate.annotation.PermissionExplanation
 import com.shuaijie.PermissionGenerate.annotation.PermissionRefuse
+import com.shuaijie.permissionproxy.PermissionProxyInterface
 import com.shuaijie.permissionproxy.PermissionUtils
 
 class MainActivity : AppCompatActivity() {
@@ -14,8 +15,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         PermissionUtils.request(
-            this, 1,
-            permissions = *arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+            this,
+            permissions = *arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
+            proxy = object : PermissionProxyInterface<Any> {
+                override fun allow(mContext: Any, vararg permissions: String, requestCode: Int) {
+                }
+
+                override fun refuse(mContext: Any, vararg permissions: String, requestCode: Int) {
+                }
+
+                override fun explanation(mContext: Any, vararg permissions: String, requestCode: Int) {
+                }
+            }
         )
     }
 

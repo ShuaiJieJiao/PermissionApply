@@ -1,14 +1,17 @@
 package com.shuaijie.permissionproxy
 
 interface PermissionProxyInterface<T> {
-    fun filterPermission(permiss: Array<String>, results: IntArray, filterValue: Int) =
-        { permiss: Array<String>, results: IntArray, c: Int ->
-            val permis = arrayListOf<String>()
-            for ((index, result) in results.withIndex()) {
-                if (result == c) permis.add(permiss.get(index))
-            }
-            permis.toArray(arrayOf<String>())
-        }(permiss, results, filterValue)
+    companion object {
+        fun filterPermission(permiss: Array<String>, results: IntArray, filterValue: Int) =
+            { permiss: Array<String>, results: IntArray, c: Int ->
+                val permis = arrayListOf<String>()
+                for ((index, result) in results.withIndex()) {
+                    if (result == c) permis.add(permiss.get(index))
+                }
+                permis.toArray(arrayOf<String>())
+            }(permiss, results, filterValue)
+
+    }
 
     /**
      * 申请被允许

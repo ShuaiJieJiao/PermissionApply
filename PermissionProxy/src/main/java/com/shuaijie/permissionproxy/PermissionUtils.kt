@@ -17,6 +17,17 @@ import java.util.*
 object PermissionUtils {
     var proxyName = "PermissionProxy"
 
+    @JvmOverloads
+    fun request(
+        mContext: Any, isExplantion: Boolean = true,
+        /* 用于不适用注解生成类方式 */proxy: PermissionProxyInterface<Any>? = null,
+        vararg permissions: String
+    ) {
+        request(
+            mContext = mContext, requestCode = 1, isExplantion = isExplantion, permissions = *permissions, proxy = proxy
+        )
+    }
+
     /**
      * 申请权限
      * @param mContext      上下文环境 android.support.v4.app.Fragment | android.app.Fragment | android.app.Activity | android.support.v7.app.AppCompatActivity
@@ -25,9 +36,12 @@ object PermissionUtils {
      * @param isExplantion  是否解释请求权限用途 默认在使用解释权限注解时解释
      */
     @JvmOverloads
-    fun request(mContext: Any, requestCode: Int, isExplantion: Boolean = true, vararg permissions: String) {
+    fun request(
+        mContext: Any, requestCode: Int, isExplantion: Boolean = true, vararg permissions: String,
+        /* 用于不适用注解生成类方式 */proxy: PermissionProxyInterface<Any>? = null
+    ) {
         val permissionRequest = getPermissionRequest(mContext)
-        permissionRequest.setPermissionsProxy(getPermissionProxy(mContext))
+        permissionRequest.setPermissionsProxy(if (proxy == null) getPermissionProxy(mContext) else proxy)
         //小于android 6.0 权限不需要申请
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             permissionRequest.allow(mContext, *permissions, requestCode = requestCode)
