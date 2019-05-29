@@ -25,15 +25,15 @@ apply plugin: 'kotlin-kapt'
 ```
 // 如果不使用注解生成代理类可以 去除PermissionGenerate配置
 // 使用注解生成代理类必须 此库是注解扫描器和注解文件
-kapt 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.0.0'
+kapt 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0'
 // 由于kapt不引用这个依赖注解包在开发期不能引用 所以添加编译期依赖 确保开发期可以引用到注解并不打包进apk
-compileOnly 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.0.0'
+compileOnly 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0'
 // 权限申请工具
-implementation 'com.github.ShuaiJieJiao.PermissionApply:PermissionProxy:2.0.0'
+implementation 'com.github.ShuaiJieJiao.PermissionApply:PermissionProxy:2.1.0'
 ```
 如果编译出现 annotationProcessor 相关问题可以添加 排除PermissionGenerate导致的问题
 ```
-annotationProcessor 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.0.0'
+annotationProcessor 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0'
 ```
 或 在 module 的 build.gradle 文件的 android -> defaultConfig 中添加
 ```
