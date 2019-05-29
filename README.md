@@ -9,17 +9,16 @@ github地址：[PermissionApply 基于编译期注解 权限申请库](https://g
     在 Perject 的 build.gradle 文件中 
     
     buildscript 标签定义 应用kotlin版本
-    ext.kotlin_version = <font color="#0099ff">'1.3.31'</font>
+    ext.kotlin_version = '1.3.31'
     
     然后在 buildscript -> dependencies 中定义 kotlin gradler插件版本
-    classpath "<font color="#0099ff">org.jetbrains.kotlin:kotlin-gradle-plugin:</font>$kotlin_version"
-    
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
 ## 项目集成
 在 Project 的 build.gradle 文件中找到 allprojects 标签<br>
 在 repositories 标签下添加 github 的 maven 库地址
 ```
-maven { url '<font color="#0099ff">https://jitpack.io</font>' }
+maven { url 'https://jitpack.io' }
 ```
 #### 模块配置
 在需要使用 PermissionApply 库的 module 的 build.gradle 文件中配置<br>
@@ -27,25 +26,25 @@ maven { url '<font color="#0099ff">https://jitpack.io</font>' }
 以下配置如果有就不需要再加了
 ```
 // 这是kotlin项目配置
-apply <font color="#0099ff">plugin</font>: '<font color="#0099ff">kotlin-android</font>'
-apply <font color="#0099ff">plugin</font>: '<font color="#0099ff">kotlin-android-extensions</font>'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 // 这是使用kotlin的kapt功能配置
-apply <font color="#0099ff">plugin</font>: '<font color="#0099ff">kotlin-kapt</font>'
+apply plugin: 'kotlin-kapt'
 ```
 ##### 配置module依赖项
 在 dependencies 标签中添加
 ```
 // 如果不使用注解生成代理类可以 去除PermissionGenerate配置
 // 使用注解生成代理类必须 此库是注解扫描器和注解文件
-kapt '<font color="#0099ff">com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0</font>'
+kapt 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0'
 // 由于kapt不引用这个依赖注解包在开发期不能引用 所以添加编译期依赖 确保开发期可以引用到注解并不打包进apk
-compileOnly '<font color="#0099ff">com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0</font>'
+compileOnly 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0'
 // 权限申请工具
-implementation '<font color="#0099ff">com.github.ShuaiJieJiao.PermissionApply:PermissionProxy:2.1.0</font>'
+implementation 'com.github.ShuaiJieJiao.PermissionApply:PermissionProxy:2.1.0'
 ```
 如果编译出现 annotationProcessor 相关问题可以添加 排除PermissionGenerate导致的问题
 ```
-annotationProcessor '<font color="#0099ff">com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0</font>'
+annotationProcessor 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0'
 ```
 或 在 module 的 build.gradle 文件的 android -> defaultConfig 中添加
 ```
