@@ -34,6 +34,7 @@ object PermissionUtils {
      * @param requestCode   请求权限的请求码
      * @param permissions   请求权限数组
      * @param isExplantion  是否解释请求权限用途 默认在使用解释权限注解时解释
+     * @param proxy         申请权限回调的代理对象
      */
     @JvmOverloads
     fun request(
