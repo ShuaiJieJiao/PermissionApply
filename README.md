@@ -2,6 +2,8 @@
 
 github地址：[PermissionApply 基于编译期注解 权限申请库](https://github.com/ShuaiJieJiao/PermissionApply)
 
+[![](https://jitpack.io/v/ShuaiJieJiao/PermissionApply.svg)](https://jitpack.io/#ShuaiJieJiao/PermissionApply)
+
     前言
 
 ###### 集成前置
@@ -47,6 +49,7 @@ implementation 'com.github.ShuaiJieJiao.PermissionApply:PermissionProxy:2.1.0'
 ```
 如果编译出现 annotationProcessor 相关问题可以添加 排除PermissionGenerate导致的问题
 ```
+// 再次添加 annotationProcessor 对导致注解扫描器工作两次 对项目没有影响 会多消耗编译电脑的性能
 annotationProcessor 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0'
 ```
 或 在 module 的 build.gradle 文件的 android -> defaultConfig 中添加
@@ -205,3 +208,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 ```
+
+    版本预告
+- [ ]  支持build构建申请权限
+- [ ]  支持配置参数修改回调行为
