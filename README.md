@@ -1,6 +1,9 @@
 # PermissionApply 基于编译期注解 权限申请库<br>
 
 github地址：[PermissionApply 基于编译期注解 权限申请库](https://github.com/ShuaiJieJiao/PermissionApply)
+
+    前言
+
 ###### 集成前置
     首先你的项目需要配置 kotlin
     
@@ -9,10 +12,10 @@ github地址：[PermissionApply 基于编译期注解 权限申请库](https://g
     在 Perject 的 build.gradle 文件中 
     
     buildscript 标签定义 应用kotlin版本
-    ext.kotlin_version = '1.3.31'
+> ext.kotlin_version = '1.3.31'
     
     然后在 buildscript -> dependencies 中定义 kotlin gradler插件版本
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+> classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
 ## 项目集成
 在 Project 的 build.gradle 文件中找到 allprojects 标签<br>

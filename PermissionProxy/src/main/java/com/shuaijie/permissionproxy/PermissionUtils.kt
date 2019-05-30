@@ -22,11 +22,7 @@ object PermissionUtils {
         mContext: Any, isExplantion: Boolean = true,
         /* 用于不适用注解生成类方式 */proxy: PermissionProxyInterface<Any>? = null,
         vararg permissions: String
-    ) {
-        request(
-            mContext = mContext, requestCode = 1, isExplantion = isExplantion, permissions = *permissions, proxy = proxy
-        )
-    }
+    ) = request(mContext, 1, isExplantion, *permissions, proxy = proxy)
 
     /**
      * 申请权限
@@ -44,9 +40,9 @@ object PermissionUtils {
         val permissionRequest = getPermissionRequest(mContext)
         permissionRequest.setPermissionsProxy(if (proxy == null) getPermissionProxy(mContext) else proxy)
         //小于android 6.0 权限不需要申请
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             permissionRequest.allow(mContext, *permissions, requestCode = requestCode)
-        } else {
+        else {
             // 检查是否有权限被拒绝
             val denyPermissions = checkPermissions(
                 if (mContext is android.support.v4.app.Fragment) mContext.context!! else if (mContext is android.app.Fragment) mContext.context else (mContext as android.app.Activity),
@@ -57,8 +53,8 @@ object PermissionUtils {
                 //未授权权限是否给用户提供权限解释
                 var isRationale = false
                 if (isExplantion)
-                    for (denyPermission in denyPermissions) {
-                        //如果未授权的权限列表中有上次用户拒绝的权限并且用户需要权限解释(写有权限解释注解),
+                    for (denyPermission in denyPermissions)
+                    //如果未授权的权限列表中有上次用户拒绝的权限并且用户需要权限解释(写有权限解释注解),
                         if (ActivityCompat.shouldShowRequestPermissionRationale(
                                 if (mContext is android.support.v4.app.Fragment) mContext.activity!! else if (mContext is android.app.Fragment) mContext.activity!! else (mContext as android.app.Activity),
                                 denyPermission
@@ -67,18 +63,15 @@ object PermissionUtils {
                             isRationale = true
                             break
                         }
-                    }
-                if (isRationale) {
-                    // 需要权限解释,可通过isExplantion = false 重新申请权限
+                if (isRationale)
+                // 需要权限解释,可通过isExplantion = false 重新申请权限
                     permissionRequest.explanation(mContext, *denyPermissions, requestCode = requestCode)
-                } else {
-                    //不需要权限解释,直接申请权限
+                else
+                //不需要权限解释,直接申请权限
                     permissionRequest.requestPermission(mContext, denyPermissions, requestCode)
-                }
-            } else {
-                //申请的权限都被授权,直接调用允许操作方法
+            } else
+            //申请的权限都被授权,直接调用允许操作方法
                 permissionRequest.allow(mContext, *permissions, requestCode = requestCode)
-            }
         }
     }
 
@@ -87,9 +80,9 @@ object PermissionUtils {
      * @param mContext 上下文环境 android.support.v4.app.Fragment | android.app.Fragment | android.app.Activity | android.support.v4.app.ActivityCompat
      * @return 权限监听
      */
-    fun getPermissionRequest(mContext: Any): PermissionRequest {
+    fun getPermissionRequest(mContext: Any): PermissionRequest =
         // 根据上下文 使用不同包下的 Fragment监听权限的申请
-        return if (mContext is android.support.v7.app.AppCompatActivity || mContext is android.support.v4.app.Fragment)
+        if (mContext is android.support.v7.app.AppCompatActivity || mContext is android.support.v4.app.Fragment)
             V4PermissionRequest() // 使用V4包下Fragment或Activity 作为上下文
         else if (mContext is android.app.Activity || mContext is android.app.Fragment)
             AppPermissionRequest()// 使用的是App包下的Fragment作为上下文
@@ -98,24 +91,16 @@ object PermissionUtils {
                 "PermissionUtils.getPermissionRequest: 当前上下文环境${mContext::class.java.name}请确保上下文属于以下类型对象\n" +
                         "android.support.v4.app.Fragment || android.app.Fragment || android.app.Activity || android.support.v7.app.AppCompatActivity"
             )
-    }
 
     /**
      * 创建权限回调代理
      * @param mContext 上下文环境 android.support.v4.app.Fragment | android.app.Fragment | android.app.Activity | android.support.v4.app.ActivityCompat
      * @return 权限回调代理
      */
-    fun getPermissionProxy(mContext: Any): PermissionProxyInterface<Any> {
-        try {
-            val forName = Class.forName(mContext.javaClass.canonicalName!! + proxyName)
-            return forName.newInstance() as PermissionProxyInterface<Any>
-        } catch (e: ClassNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IllegalAccessException) {
-            e.printStackTrace()
-        } catch (e: InstantiationException) {
-            e.printStackTrace()
-        }
+    fun getPermissionProxy(mContext: Any): PermissionProxyInterface<Any> = try {
+        val forName = Class.forName(mContext.javaClass.canonicalName!! + proxyName)
+        forName.newInstance() as PermissionProxyInterface<Any>
+    } catch (e: Exception) {
         throw IllegalStateException(proxyName + "类未找到,请确认新增权限注解后项目是否重新编译\n请确保使用com.shuaijie.PermissionGenerate生成代理类")
     }
 
@@ -125,14 +110,12 @@ object PermissionUtils {
      * @param permissions 申请权限数组
      * @return 返回被拒绝的权限数组
      */
-    private fun checkPermissions(context: Context, vararg permissions: String): List<String> {
+    private fun checkPermissions(context: Context, vararg permissions: String): List<String> = {
         val denyPermissions = ArrayList<String>()
-        for (permission in permissions) {
-            //如果权限未被授权,则加入未授权列表
-            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+        for (permission in permissions)
+        //如果权限未被授权,则加入未授权列表
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED)
                 denyPermissions.add(permission)
-            }
-        }
-        return denyPermissions
-    }
+        denyPermissions
+    }()
 }

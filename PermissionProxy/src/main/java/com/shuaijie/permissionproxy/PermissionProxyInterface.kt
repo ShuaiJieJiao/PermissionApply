@@ -35,7 +35,6 @@ interface PermissionProxyInterface<T> {
      * 是否解释申请权限用途
      * @return
      */
-    fun isExplanation(mContext: T, vararg permissions: String, requestCode: Int): Boolean {
-        return false
-    }
+    fun isExplanation(mContext: T, vararg permissions: String, requestCode: Int): Boolean = false
+
 }

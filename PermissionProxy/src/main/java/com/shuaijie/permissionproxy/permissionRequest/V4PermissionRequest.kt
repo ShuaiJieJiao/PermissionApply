@@ -33,14 +33,10 @@ class V4PermissionRequest : Fragment(), PermissionRequest {
         this.permissionsResult = createProxy(mContext)
 
         // 设置权限监听
-        if (mContext is Fragment) mContext.childFragmentManager.beginTransaction().add(
-            this,
-            this::class.java.simpleName
-        ).commitAllowingStateLoss()
-        else if (mContext is AppCompatActivity) mContext.supportFragmentManager.beginTransaction().add(
-            this,
-            this::class.java.simpleName
-        ).commitAllowingStateLoss()
+        if (mContext is Fragment) mContext.childFragmentManager.beginTransaction()
+            .add(this, this::class.java.simpleName).commitAllowingStateLoss()
+        else if (mContext is AppCompatActivity) mContext.supportFragmentManager.beginTransaction()
+            .add(this, this::class.java.simpleName).commitAllowingStateLoss()
         else throw IllegalArgumentException("mContext Type Exception 上下文类型不支持");
     }
 
@@ -51,11 +47,8 @@ class V4PermissionRequest : Fragment(), PermissionRequest {
     /**
      * @param mContext 创建权限代理对象
      */
-    fun createProxy(objects: Any): PermissionProxyInterface<Any> {
-        if (permissionsResult == null)
-            return (PermissionUtils.getPermissionProxy(objects))
-        else return permissionsResult!!;
-    }
+    fun createProxy(objects: Any): PermissionProxyInterface<Any> = if (permissionsResult == null)
+        PermissionUtils.getPermissionProxy(objects) else permissionsResult!!;
 
     /**
      * 权限回调
@@ -80,24 +73,19 @@ class V4PermissionRequest : Fragment(), PermissionRequest {
 
         // 移除监听
         if (mContext is Fragment) (mContext as Fragment).childFragmentManager.beginTransaction().remove(this).commitAllowingStateLoss()
-        else if (mContext is AppCompatActivity) (mContext as AppCompatActivity).supportFragmentManager.beginTransaction().remove(
-            this
-        ).commitAllowingStateLoss()
+        else if (mContext is AppCompatActivity) (mContext as AppCompatActivity).supportFragmentManager.beginTransaction()
+            .remove(this).commitAllowingStateLoss()
     }
 
-    override fun allow(mContext: Any, vararg permissions: String, requestCode: Int) {
+    override fun allow(mContext: Any, vararg permissions: String, requestCode: Int) =
         createProxy(mContext).allow(mContext, *permissions, requestCode = requestCode)
-    }
 
-    override fun refuse(mContext: Any, vararg permissions: String, requestCode: Int) {
+    override fun refuse(mContext: Any, vararg permissions: String, requestCode: Int) =
         createProxy(mContext).refuse(mContext, *permissions, requestCode = requestCode)
-    }
 
-    override fun explanation(mContext: Any, vararg permissions: String, requestCode: Int) {
+    override fun explanation(mContext: Any, vararg permissions: String, requestCode: Int) =
         createProxy(mContext).explanation(mContext, *permissions, requestCode = requestCode)
-    }
 
-    override fun isExplanation(mContext: Any, vararg permissions: String, requestCode: Int): Boolean {
-        return createProxy(mContext).isExplanation(mContext, *permissions, requestCode = requestCode)
-    }
+    override fun isExplanation(mContext: Any, vararg permissions: String, requestCode: Int): Boolean =
+        createProxy(mContext).isExplanation(mContext, *permissions, requestCode = requestCode)
 }

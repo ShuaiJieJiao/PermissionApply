@@ -32,25 +32,22 @@ class AnnotationProcessor : AbstractProcessor() {
     /**
      * 设置需要扫描的注解
      */
-    override fun getSupportedAnnotationTypes(): MutableSet<String> {
-        return mutableSetOf(
-            PermissionAllow::class.java.canonicalName,
-            PermissionRefuse::class.java.canonicalName,
-            PermissionExplanation::class.java.canonicalName
-        )
-    }
+    override fun getSupportedAnnotationTypes(): MutableSet<String> = mutableSetOf(
+        PermissionAllow::class.java.canonicalName,
+        PermissionRefuse::class.java.canonicalName,
+        PermissionExplanation::class.java.canonicalName
+    )
 
     /**
      * 创建 或 获取当前注解的类信息
      */
-    fun getInfo(className: Element, processingEnv: ProcessingEnvironment): ProxyInfo {
-        return if (infos.containsKey(className.enclosingElement.simpleName.toString()))
+    fun getInfo(className: Element, processingEnv: ProcessingEnvironment): ProxyInfo =
+        if (infos.containsKey(className.enclosingElement.simpleName.toString()))
             infos.get(className.enclosingElement.simpleName.toString())!!
         else {
             infos.put(className.enclosingElement.simpleName.toString(), ProxyInfo(className, processingEnv))
             getInfo(className, processingEnv)
         }
-    }
 
     /**
      * 开始创建类信息 并生成代码
@@ -72,15 +69,12 @@ class AnnotationProcessor : AbstractProcessor() {
                                 throw IllegalArgumentException("${element.enclosingElement}.${element} 参数错误支持List<String>")
                     }()}"
                 when (annotation) {
-                    PermissionAllow::class.java -> info.addAllow(
-                        element.getAnnotation(annotation).requestCode, methodName
-                    )
-                    PermissionRefuse::class.java -> info.addRefuse(
-                        element.getAnnotation(annotation).requestCode, methodName
-                    )
-                    PermissionExplanation::class.java -> info.addExplanation(
-                        element.getAnnotation(annotation).requestCode, methodName
-                    )
+                    PermissionAllow::class.java ->
+                        info.addAllow(element.getAnnotation(annotation).requestCode, methodName)
+                    PermissionRefuse::class.java ->
+                        info.addRefuse(element.getAnnotation(annotation).requestCode, methodName)
+                    PermissionExplanation::class.java ->
+                        info.addExplanation(element.getAnnotation(annotation).requestCode, methodName)
                 }
             }
         }
@@ -89,8 +83,7 @@ class AnnotationProcessor : AbstractProcessor() {
             File(
                 // kotlin 代码生成位置
                 "${kaptKotlinGeneratedDir}/${processingEnv.elementUtils.getPackageOf(info.value.element).toString().replace(
-                    ".",
-                    "/"
+                    ".", "/"
                 )}",
                 // kotlin 代码生成文件名
                 "${info.value.element.enclosingElement.simpleName}${ProxyInfo.proxyName}.kt"
