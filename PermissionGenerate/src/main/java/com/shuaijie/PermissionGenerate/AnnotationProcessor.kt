@@ -82,9 +82,8 @@ class AnnotationProcessor : AbstractProcessor() {
         infos.forEach { info ->
             File(
                 // kotlin 代码生成位置
-                "${kaptKotlinGeneratedDir}/${processingEnv.elementUtils.getPackageOf(info.value.element).toString().replace(
-                    ".", "/"
-                )}",
+                "${kaptKotlinGeneratedDir}/${processingEnv.elementUtils.getPackageOf(info.value.element)
+                    .toString().replace(".", "/")}",
                 // kotlin 代码生成文件名
                 "${info.value.element.enclosingElement.simpleName}${ProxyInfo.proxyName}.kt"
             ).apply {

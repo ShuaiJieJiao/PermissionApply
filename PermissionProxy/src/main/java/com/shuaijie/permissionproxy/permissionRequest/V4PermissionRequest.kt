@@ -1,6 +1,7 @@
 package com.shuaijie.permissionproxy.permissionRequest
 
 import android.content.pm.PackageManager
+import android.os.Build
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.shuaijie.permissionproxy.PermissionProxyInterface
@@ -9,7 +10,7 @@ import com.shuaijie.permissionproxy.PermissionUtils
 
 class V4PermissionRequest : Fragment(), PermissionRequest {
     private var mContext: Any? = null
-    private var permissions: Array<String> = arrayOf()
+    private var permissions: Array<String>? = null
     private var requestCode: Int = 0
     var permissionsResult: PermissionProxyInterface<Any>? = null;
     /**
@@ -17,7 +18,8 @@ class V4PermissionRequest : Fragment(), PermissionRequest {
      */
     override fun onStart() {
         super.onStart()
-        requestPermissions(permissions, requestCode)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && permissions != null)
+            requestPermissions(permissions!!, requestCode)
     }
 
     /**

@@ -15,7 +15,7 @@ import java.util.*
  */
 @SuppressWarnings("all")
 object PermissionUtils {
-    var proxyName = "PermissionProxy"
+    const val proxyName = "PermissionProxy"
 
     @JvmOverloads
     fun request(

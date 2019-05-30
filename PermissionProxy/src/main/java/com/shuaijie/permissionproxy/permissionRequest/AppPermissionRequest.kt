@@ -10,7 +10,7 @@ import com.shuaijie.permissionproxy.PermissionUtils
 
 @SuppressWarnings("all")
 class AppPermissionRequest : Fragment(), PermissionRequest {
-    var permissions: Array<String> = arrayOf()
+    var permissions: Array<String>? = null
     var requestCode: Int = 0
     var mContext: Any? = null;
     var permissionsResult: PermissionProxyInterface<Any>? = null;
@@ -19,8 +19,8 @@ class AppPermissionRequest : Fragment(), PermissionRequest {
      */
     override fun onStart() {
         super.onStart()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            requestPermissions(permissions, requestCode)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && permissions != null)
+            requestPermissions(permissions!!, requestCode)
     }
 
     /**

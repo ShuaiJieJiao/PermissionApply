@@ -1,6 +1,12 @@
 package com.shuaijie.permissionproxy
 
-interface PermissionProxyInterface<T> {
+import com.shuaijie.permissionproxy.interfaces.PermissionAllow
+import com.shuaijie.permissionproxy.interfaces.PermissionExplanation
+import com.shuaijie.permissionproxy.interfaces.PermissionIsExplanation
+import com.shuaijie.permissionproxy.interfaces.PermissionRefuse
+
+interface PermissionProxyInterface<T> : PermissionAllow<T>, PermissionRefuse<T>, PermissionExplanation<T>,
+    PermissionIsExplanation<T> {
     companion object {
         fun filterPermission(permiss: Array<String>, results: IntArray, filterValue: Int) = {
             val permis = arrayListOf<String>()
@@ -9,32 +15,4 @@ interface PermissionProxyInterface<T> {
             permis.toArray(arrayOf<String>())
         }()
     }
-
-    /**
-     * 申请被允许
-     * @param mContext
-     * @param requestCode
-     */
-    fun allow(mContext: T, vararg permissions: String, requestCode: Int)
-
-    /**
-     * 申请被拒绝
-     * @param mContext
-     * @param requestCode
-     */
-    fun refuse(mContext: T, vararg permissions: String, requestCode: Int)
-
-    /**
-     * 为申请的权限解释
-     * @param mContext
-     * @param requestCode
-     */
-    fun explanation(mContext: T, vararg permissions: String, requestCode: Int)
-
-    /**
-     * 是否解释申请权限用途
-     * @return
-     */
-    fun isExplanation(mContext: T, vararg permissions: String, requestCode: Int): Boolean = false
-
 }
