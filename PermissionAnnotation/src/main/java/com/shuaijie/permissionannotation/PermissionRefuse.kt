@@ -1,4 +1,4 @@
-package com.shuaijie.PermissionGenerate.annotation
+package com.shuaijie.permissionannotation
 
 /**
  * 申请权限时被拒 标识方法

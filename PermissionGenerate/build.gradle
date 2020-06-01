@@ -6,6 +6,7 @@ group = 'com.ShuaijieJiao.Generate'
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation project(path: ':PermissionAnnotation')
 }
 
 sourceCompatibility = "1.8"

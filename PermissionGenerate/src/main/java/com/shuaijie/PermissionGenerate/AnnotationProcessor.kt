@@ -1,8 +1,6 @@
 package com.shuaijie.PermissionGenerate
 
-import com.shuaijie.PermissionGenerate.annotation.PermissionAllow
-import com.shuaijie.PermissionGenerate.annotation.PermissionExplanation
-import com.shuaijie.PermissionGenerate.annotation.PermissionRefuse
+import com.shuaijie.permissionannotation.*
 import java.io.File
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
@@ -21,7 +19,11 @@ class AnnotationProcessor : AbstractProcessor() {
         const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
 
         val permssionAnnotations: Array<Class<out Annotation>> =
-            arrayOf(PermissionAllow::class.java, PermissionRefuse::class.java, PermissionExplanation::class.java)
+            arrayOf(
+                PermissionAllow::class.java,
+                PermissionRefuse::class.java,
+                PermissionExplanation::class.java
+            )
     }
 
     /**
@@ -45,14 +47,20 @@ class AnnotationProcessor : AbstractProcessor() {
         if (infos.containsKey(className.enclosingElement.simpleName.toString()))
             infos.get(className.enclosingElement.simpleName.toString())!!
         else {
-            infos.put(className.enclosingElement.simpleName.toString(), ProxyInfo(className, processingEnv))
+            infos.put(
+                className.enclosingElement.simpleName.toString(),
+                ProxyInfo(className, processingEnv)
+            )
             getInfo(className, processingEnv)
         }
 
     /**
      * 开始创建类信息 并生成代码
      */
-    override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment): Boolean {
+    override fun process(
+        annotations: MutableSet<out TypeElement>?,
+        roundEnv: RoundEnvironment
+    ): Boolean {
         // 获取kotlin 代码在磁盘生成的路径
         val kaptKotlinGeneratedDir = processingEnv.options[KAPT_KOTLIN_GENERATED_OPTION_NAME]
         // 向控制台输出信息
@@ -74,7 +82,10 @@ class AnnotationProcessor : AbstractProcessor() {
                     PermissionRefuse::class.java ->
                         info.addRefuse(element.getAnnotation(annotation).requestCode, methodName)
                     PermissionExplanation::class.java ->
-                        info.addExplanation(element.getAnnotation(annotation).requestCode, methodName)
+                        info.addExplanation(
+                            element.getAnnotation(annotation).requestCode,
+                            methodName
+                        )
                 }
             }
         }

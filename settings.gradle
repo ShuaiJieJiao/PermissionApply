@@ -1,1 +1,2 @@
+include ':PermissionAnnotation'
 include ':app', ':PermissionGenerate', ':PermissionProxy'

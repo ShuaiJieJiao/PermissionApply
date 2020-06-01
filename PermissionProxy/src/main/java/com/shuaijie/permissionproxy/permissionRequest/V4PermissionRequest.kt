@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.shuaijie.permissionproxy.PermissionProxyInterface
 import com.shuaijie.permissionproxy.PermissionProxyInterface.Companion.filterPermission
-import com.shuaijie.permissionproxy.PermissionUtils
+import com.shuaijie.permissionproxy.Utils.getPermissionProxy
 
 class V4PermissionRequest : Fragment(), PermissionRequest {
     private var mContext: Any? = null
@@ -49,8 +49,8 @@ class V4PermissionRequest : Fragment(), PermissionRequest {
     /**
      * @param mContext 创建权限代理对象
      */
-    fun createProxy(objects: Any): PermissionProxyInterface<Any> = if (permissionsResult == null)
-        PermissionUtils.getPermissionProxy(objects) else permissionsResult!!;
+    fun createProxy(objects: Any): PermissionProxyInterface<Any> =
+        if (permissionsResult == null) getPermissionProxy(objects) else permissionsResult!!;
 
     /**
      * 权限回调

@@ -13,3 +13,4 @@ build
 .externalNativeBuild
 /.idea/
 gradle
+proguardMapping.txt

@@ -14,22 +14,24 @@ github地址：[PermissionApply 基于编译期注解 权限申请库](https://g
     在 Perject 的 build.gradle 文件中 
     
     buildscript 标签定义 应用kotlin版本
-> ext.kotlin_version = '1.3.31'
-    
+```groovy
+ext.kotlin_version = '1.3.31'
+```
     然后在 buildscript -> dependencies 中定义 kotlin gradler插件版本
-> classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
+```groovy
+classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+```
 ## 项目集成
 在 Project 的 build.gradle 文件中找到 allprojects 标签<br>
 在 repositories 标签下添加 github 的 maven 库地址
-```
+```groovy
 maven { url 'https://jitpack.io' }
 ```
 #### 模块配置
 在需要使用 PermissionApply 库的 module 的 build.gradle 文件中配置<br>
 
 以下配置如果有就不需要再加了
-```
+```groovy
 // 这是kotlin项目配置
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -38,27 +40,32 @@ apply plugin: 'kotlin-kapt'
 ```
 ##### 配置module依赖项
 在 dependencies 标签中添加
-```
+```groovy
+def permissionVersion = "2.2.0"
 // 如果不使用注解生成代理类可以 去除PermissionGenerate配置
 // 使用注解生成代理类必须 此库是注解扫描器和注解文件
-kapt 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0'
+kapt "com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:$permissionVersion"
 // 由于kapt不引用这个依赖注解包在开发期不能引用 所以添加编译期依赖 确保开发期可以引用到注解并不打包进apk
-compileOnly 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0'
+compileOnly "com.github.ShuaiJieJiao.PermissionApply:PermissionAnnotation:$permissionVersion"
 // 权限申请工具
-implementation 'com.github.ShuaiJieJiao.PermissionApply:PermissionProxy:2.1.0'
+implementation "com.github.ShuaiJieJiao.PermissionApply:PermissionProxy:$permissionVersion"
 ```
+
 如果编译出现 annotationProcessor 相关问题可以添加 排除PermissionGenerate导致的问题
-```
+
+```groovy
 // 再次添加 annotationProcessor 对导致注解扫描器工作两次 对项目没有影响 会多消耗编译电脑的性能
 annotationProcessor 'com.github.ShuaiJieJiao.PermissionApply:PermissionGenerate:2.1.0'
 ```
+
 或 在 module 的 build.gradle 文件的 android -> defaultConfig 中添加
-```
+
+```groovy
 javaCompileOptions {annotationProcessorOptions {includeCompileClasspath true}}
 ```
 
 ### 混淆配置
-```
+```proguard
 -keep public class * implements com.shuaijie.permissionproxy.PermissionProxyInterface
 ```
 
@@ -73,7 +80,7 @@ PermissionRefuse | requestCode 接收对应申请对话  | 标注拒绝的方法
 PermissionExplanation | requestCode 接收对应申请对话 | 标注解释的方法 | 没有参数 或 List\<String>接收需要解释的权限
 
 PermissionUtils.request 参数含义
-```
+```kotlin
 /** 
  * 申请权限
  * @param mContext      上下文环境 android.support.v4.app.Fragment | android.app.Fragment | android.app.Activity | android.support.v7.app.AppCompatActivity
@@ -83,9 +90,10 @@ PermissionUtils.request 参数含义
  * @param proxy         申请权限回调的代理对象
  */
 ```
+
 ###### 参数说明
 java 代码不使用注解生成库示例
-```
+```java
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
 ```
 java 代码使用注解生成库示例
-```
+```java
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 <br>
 kotlin 代码不使用注解生成库示例
 
-```
+```kotlin
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -181,7 +189,7 @@ class MainActivity : AppCompatActivity() {
 ```
 kotlin 代码使用注解生成库示例
 
-```
+```kotlin
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

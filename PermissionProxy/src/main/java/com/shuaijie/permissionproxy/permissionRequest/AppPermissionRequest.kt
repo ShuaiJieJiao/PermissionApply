@@ -6,7 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import com.shuaijie.permissionproxy.PermissionProxyInterface
 import com.shuaijie.permissionproxy.PermissionProxyInterface.Companion.filterPermission
-import com.shuaijie.permissionproxy.PermissionUtils
+import com.shuaijie.permissionproxy.Utils.getPermissionProxy
 
 @SuppressWarnings("all")
 class AppPermissionRequest : Fragment(), PermissionRequest {
@@ -50,8 +50,8 @@ class AppPermissionRequest : Fragment(), PermissionRequest {
     /**
      * @param mContext 创建权限代理对象
      */
-    fun createProxy(mContext: Any): PermissionProxyInterface<Any> = if (permissionsResult == null)
-        (PermissionUtils.getPermissionProxy(mContext)) else permissionsResult!!;
+    fun createProxy(mContext: Any): PermissionProxyInterface<Any> =
+        if (permissionsResult == null) getPermissionProxy(mContext) else permissionsResult!!;
 
     /**
      * 权限回调
